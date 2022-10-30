@@ -1,85 +1,82 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+	<Loader v-if="uiStore.pageLoading" />
+	<Sidebar
+		:class="[
+			'fixed inset-y-0 z-50 w-80',
+			uiStore.sidebarOpen && authStore.isLoggedIn
+				? 'left-0 border-r border-slate-100'
+				: '-left-80',
+		]"
+	/>
+	<div
+		:class="[
+			'flex flex-col md:fixed md:inset-y-0 md:right-0',
+			uiStore.sidebarOpen && authStore.isLoggedIn ? 'left-80' : 'left-0',
+		]"
+	>
+		<Header />
+		<div :class="['h-screen overflow-y-scroll pt-16 md:pt-0']">
+			<div
+				class="py-6 md:py-10 px-6 md:pr-8 w-full md:max-w-screen-lg mx-auto"
+			>
+				<!-- <router-view v-slot="{ Component }">
+					<keep-alive>
+						<component :is="Component" />
+					</keep-alive>
+				</router-view> -->
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+				<router-view></router-view>
+			</div>
+		</div>
+	</div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
+<script setup>
+import { onMounted, watch } from "vue";
+import { onAuthStateChanged } from "firebase/auth";
+import { useUiStore } from "./stores/UiStore";
+import { useAuthStore } from "./stores/AuthStore";
+import { auth } from "./vuedo-firebase";
+import { useRoute, useRouter } from "vue-router";
+import { useProjectsStore } from "@/stores/projectsStore";
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
+const authStore = useAuthStore();
+const uiStore = useUiStore();
+const route = useRoute();
+const router = useRouter();
+const projectsStore = useProjectsStore();
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
+const redirectChecks = () => {
+	if (authStore.user && route.meta.isGuest) {
+		router.push({ name: "projects" });
+	}
+	if (!authStore.user && route.meta.requiresAuth) {
+		router.push({ name: "sign-in" });
+	}
+	return;
+};
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
+watch(
+	() => route.path,
+	() => {
+		return redirectChecks();
+	},
+	{ immediate: true }
+);
 
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
+watch(
+	() => authStore.user,
+	() => {
+		return redirectChecks();
+	},
+	{ immediate: true }
+);
 
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-</style>
+onMounted(() => {
+	onAuthStateChanged(auth, (user) => {
+		authStore.user = user ? user : null;
+		projectsStore.projects = [];
+	});
+	uiStore.pageLoading = false;
+});
+</script>

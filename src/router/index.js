@@ -1,23 +1,97 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory } from "vue-router";
+import HomeView from "../views/Index.vue";
+import { auth } from "../vuedo-firebase";
+import { useAuthStore } from "../stores/authStore";
+
+import { onAuthStateChanged } from "firebase/auth";
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
-    }
-  ]
-})
+	history: createWebHistory(import.meta.env.BASE_URL),
+	routes: [
+		{
+			path: "/",
+			name: "home",
+			component: HomeView,
+			meta: {
+				pageTitle: "VueDo",
+				isGuest: true,
+			},
+		},
+		{
+			path: "/auth",
+			meta: {
+				isGuest: true,
+			},
+			children: [
+				{
+					path: "sign-in",
+					name: "sign-in",
+					component: () => import("../views/auth/SignIn.vue"),
+					meta: {
+						pageTitle: "Sign - In",
+						isGuest: true,
+					},
+				},
+				{
+					path: "sign-up",
+					name: "sign-up",
+					component: () => import("../views/auth/SignUp.vue"),
+					meta: {
+						pageTitle: "Sign - Up",
+						isGuest: true,
+					},
+				},
+			],
+		},
+		{
+			path: "/projects",
+			name: "projects",
+			component: () => import("../views/projects/Index.vue"),
+			meta: {
+				pageTitle: "Projects",
+				requiresAuth: true,
+			},
+			children: [
+				{
+					path: ":id",
+					name: "project",
+					component: () =>
+						import("../views/projects/ProjectView.vue"),
+					meta: {
+						pageTitle: "Project",
+						requiresAuth: true,
+					},
+				},
+			],
+		},
+	],
+});
 
-export default router
+// const getCurrentUser = () => {
+// 	return new Promise((resolve, reject) => {
+// 		const removeListener = onAuthStateChanged(
+// 			auth,
+// 			(user) => {
+// 				removeListener();
+// 				resolve(user);
+// 			},
+// 			reject
+// 		);
+// 	});
+// };
+
+router.beforeEach(async (to, from, next) => {
+	const authStore = useAuthStore();
+	const user = authStore.user;
+	if (to.matched.some((r) => r.meta.isGuest) && user) {
+		next("/projects");
+	} else if (to.matched.some((r) => r.meta.requiresAuth) && !user) {
+		next("/auth/sign-in");
+	}
+
+	const suffix = to.name !== "home" ? " | Vuedo" : "";
+	document.title = `${to.meta.pageTitle}${suffix}`;
+	next();
+});
+
+export default router;
