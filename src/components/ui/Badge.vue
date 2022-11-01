@@ -1,6 +1,6 @@
 <template>
 	<span
-		class="rounded-full p-1 py-0.5 text-xs items-center flex justify-center badge"
+		class="rounded-full p-1 px-1.5 min-w-[20px] text-[10px] leading-none items-center flex justify-center badge max-w-max space-x-1"
 	>
 		<slot></slot>
 	</span>
@@ -13,7 +13,10 @@
 		@apply text-rose-500 bg-white;
 	}
 	&.dark {
-		@apply text-rose-500 bg-black;
+		@apply text-rose-400 bg-black;
+	}
+	&.slate {
+		@apply text-slate-600 bg-slate-300;
 	}
 }
 </style>

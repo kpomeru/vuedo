@@ -1,0 +1,83 @@
+<template>
+	<div v-if="comment" class="rounded-md border p-4 space-y-2 bg-slate-50">
+		<div class="text-xs">
+			{{ comment.content }}
+		</div>
+		<div class="flex items-end justify-between space-x-4">
+			<Badge class="slate shrink-0">
+				{{ `${date.date} ${date.hour}:${date.minute}${date.ampm}` }}
+			</Badge>
+			<div class="text-right">
+				<template v-if="deleting">
+					<spinner size="w-4 h-4"></spinner>
+				</template>
+
+				<template v-else>
+					<DeleteItem
+						v-if="startDelete"
+						@process-delete="deleteComment"
+						@cancel="startDelete = false"
+					/>
+					<span
+						v-else
+						class="cursor-pointer"
+						title="Delete comment"
+						@click="startDelete = true"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 20 20"
+							fill="currentColor"
+							class="w-4 h-4"
+						>
+							<path
+								fill-rule="evenodd"
+								d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z"
+								clip-rule="evenodd"
+							/>
+						</svg>
+					</span>
+				</template>
+			</div>
+		</div>
+	</div>
+</template>
+
+<script setup>
+import { useDates } from "@/compositions/dates";
+import { computed, ref } from "vue";
+import { useProjects } from "@/compositions/projects";
+import { useProjectsStore } from "@/stores/ProjectsStore";
+const props = defineProps({ comment: { type: Object, required: true } });
+
+const projectsStore = useProjectsStore();
+
+const project = computed(
+	() =>
+		projectsStore.projects.find(
+			(p) => p.id === projectsStore.viewComments.id
+		) || null
+);
+
+const { formatDate } = useDates();
+const { deleteComment: dComment } = useProjects();
+
+const startDelete = ref(false);
+const deleting = ref(false);
+
+const date = computed(() => formatDate(props.comment.createdAt));
+
+const deleteComment = async () => {
+	deleting.value = true;
+	await dComment({
+		project: project.value,
+		type: projectsStore.viewComments.type,
+		id: projectsStore.viewComments.id,
+		comment: props.comment,
+	});
+	deleting.value = false;
+	startDelete.value = false;
+};
+</script>
+
+<style lang="scss" scoped></style>

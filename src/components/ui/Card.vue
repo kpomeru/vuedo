@@ -11,6 +11,9 @@
 			:class="[
 				'bg-white block',
 				padding,
+				{ 'border-x': hasBorder },
+				{ 'border-t': hasBorder && !hasHeader },
+				{ 'border-b': hasBorder && !hasFooter },
 				{ 'rounded-t-md': !hasHeader },
 				{ 'rounded-b-md': !hasFooter },
 			]"
@@ -28,10 +31,12 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
+
 const props = defineProps({
+	hasBorder: { type: Boolean, default: false },
 	hasFooter: { type: Boolean, default: false },
 	hasHeader: { type: Boolean, default: false },
+	padding: { type: String, default: "p-6" },
 });
-
-const padding = "p-6";
 </script>

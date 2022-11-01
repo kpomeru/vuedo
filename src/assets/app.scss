@@ -18,11 +18,16 @@
 	h5 {
 		@apply text-base sm:text-lg;
 	}
+
+	h6 {
+		@apply text-base;
+	}
+
 	h3,
 	h4,
 	h5,
 	h6 {
-		@apply font-medium text-base;
+		@apply font-medium;
 	}
 }
 

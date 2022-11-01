@@ -48,7 +48,7 @@
 					/>
 				</svg>
 			</IconButton>
-			<Dropdown direction="right">
+			<Dropdown align-to="right">
 				<template #trigger>
 					<div
 						:class="[

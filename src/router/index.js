@@ -57,12 +57,34 @@ const router = createRouter({
 					name: "project",
 					component: () =>
 						import("../views/projects/ProjectView.vue"),
+					// components: {
+					// 	ProjectsView: () =>
+					// 		import("../views/projects/ProjectView.vue"),
+					// },
 					meta: {
 						pageTitle: "Project",
 						requiresAuth: true,
 					},
 				},
 			],
+		},
+		{
+			path: "/todays-tasks",
+			name: "todays-tasks",
+			component: () => import("../views/TodaysTasks.vue"),
+			meta: {
+				pageTitle: "Todays - Tasks",
+				requiresAuth: true,
+			},
+		},
+		{
+			path: "/upcoming-tasks",
+			name: "upcoming-tasks",
+			component: () => import("../views/UpcomingTasks.vue"),
+			meta: {
+				pageTitle: "Upcoming - Tasks",
+				requiresAuth: true,
+			},
 		},
 	],
 });
@@ -85,8 +107,10 @@ router.beforeEach(async (to, from, next) => {
 	const user = authStore.user;
 	if (to.matched.some((r) => r.meta.isGuest) && user) {
 		next("/projects");
+		return;
 	} else if (to.matched.some((r) => r.meta.requiresAuth) && !user) {
 		next("/auth/sign-in");
+		return;
 	}
 
 	const suffix = to.name !== "home" ? " | Vuedo" : "";

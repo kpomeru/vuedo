@@ -6,8 +6,14 @@
 		</Card>
 
 		<template v-else>
-			<h1>Projects</h1>
+			<div class="flex items-center justify-between space-x-4">
+				<h3 v-if="route.name === 'projects'">Projects</h3>
+				<ProjectHeading v-else />
+			</div>
 			<router-view></router-view>
+			<transition>
+				<Comments v-if="projectStore.viewComments" />
+			</transition>
 		</template>
 	</div>
 </template>
@@ -21,18 +27,22 @@ import {
 	orderBy,
 } from "@firebase/firestore";
 import { onMounted, ref, watch } from "vue";
-import { onBeforeRouteLeave } from "vue-router";
+import { onBeforeRouteLeave, useRoute } from "vue-router";
 import { db } from "../../vuedo-firebase";
 import { useProjectsStore } from "@/stores/projectsStore";
 import { useProjects } from "@/compositions/projects";
+import { useDates } from "@/compositions/dates";
 import { useAuthStore } from "../../stores/AuthStore";
+import router from "../../router";
 
 const authStore = useAuthStore();
-const projectStore = useProjectsStore();
-const loading = ref(true);
-let removeProjectsListener;
-
+const { formatDate } = useDates();
 const projects = useProjects();
+const projectStore = useProjectsStore();
+const route = useRoute();
+
+const loading = ref(true);
+const removeProjectsListener = ref(null);
 
 onMounted(() => {
 	const projectsRef = collection(db, "projects");
@@ -42,8 +52,8 @@ onMounted(() => {
 		orderBy("title"),
 		orderBy("createdAt")
 	);
-	// const removeProjectsListener =
-	onSnapshot(
+
+	removeProjectsListener.value = onSnapshot(
 		q,
 		async (snapshots) => {
 			if (!snapshots.docs.length) {
@@ -54,10 +64,24 @@ onMounted(() => {
 			snapshots.forEach((doc) => {
 				list.push({
 					id: doc.id,
+					comments: [],
+					tasks: [],
 					...doc.data(),
+					createdAt: formatDate(doc.data().createdAt),
 				});
-				projectStore.projects = list;
 			});
+			projectStore.projects = list;
+
+			if (projectStore.projects.length && route.name !== "project") {
+				router.push({
+					name: "project",
+					params: {
+						id: projectStore.projects.find(
+							(p) => p.title.toLowerCase() === "general"
+						).id,
+					},
+				});
+			}
 		},
 		(error) => {
 			console.log(error);
@@ -67,8 +91,8 @@ onMounted(() => {
 });
 
 onBeforeRouteLeave(() => {
-	if (removeProjectsListener) {
-		removeProjectsListener();
+	if (removeProjectsListener.value) {
+		removeProjectsListener.value();
 	}
 });
 </script>
