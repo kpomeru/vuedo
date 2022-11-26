@@ -1,7 +1,7 @@
 <template>
 	<button
 		:class="[
-			'rounded-md shrink-0 flex items-center justify-center space-x-2 text-sm',
+			'rounded-md shrink-0 flex items-center justify-center space-x-2 text-sm sm:text-xs',
 			color,
 			disabledStyle,
 			size,

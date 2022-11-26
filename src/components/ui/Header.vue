@@ -30,10 +30,10 @@
 					/>
 				</svg>
 			</IconButton>
-			<IconButton
+			<!-- <IconButton
 				size="sm"
 				@click="toggleAddProject"
-				:title="`Add a new ${
+				:title="`Add a new  ${
 					route.name === 'projects' ? 'project' : 'task'
 				}`"
 			>
@@ -47,19 +47,24 @@
 						d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z"
 					/>
 				</svg>
-			</IconButton>
+			</IconButton> -->
 			<Dropdown align-to="right">
 				<template #trigger>
 					<div
 						:class="[
 							'rounded-full  text-white flex items-center',
-							uiStore.sidebarOpen ? '' : 'sm:p-1 sm:bg-rose-500',
+							uiStore.sidebarOpen
+								? ''
+								: 'sm:p-[3px] sm:bg-rose-500',
 						]"
 					>
 						<img
 							:class="[
-								'rounded-full bg-slate-200 w-10 h-10',
-								{ 'sm:w-9 sm:h-9': uiStore.sidebarOpen },
+								'rounded-full bg-slate-200 w-10 h-10 sm:w-8 sm:h-8',
+								// uiStore.sidebarOpen
+								// 	? 'sm:w-8 sm:h-8'
+								// 	: 'sm:w-8 sm:h-8',
+								// { 'sm:w-8 sm:h-8': uiStore.sidebarOpen },
 							]"
 							:src="
 								authStore.user.photoURL ||
@@ -69,7 +74,7 @@
 						/>
 						<span
 							v-if="!uiStore.sidebarOpen"
-							class="px-2 text-sm hidden sm:inline-block"
+							class="px-2 text-xs hidden sm:inline-block"
 						>
 							{{ authStore.getUsername }}
 						</span>

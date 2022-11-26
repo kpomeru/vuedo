@@ -8,7 +8,7 @@
 			<div
 				v-if="open"
 				:class="[
-					' min-w-[192px] absolute top-full pt-2',
+					' min-w-[192px] absolute top-full pt-2 z-10',
 					alignTo === 'left' ? 'left-0' : 'right-0',
 					// uiStore.sidebarOpen ? 'top-10' : 'top-14',
 				]"

@@ -1,7 +1,43 @@
 <template>
-	<div>
+	<div class="space-y-6">
 		<h4>Upcoming Tasks</h4>
+
+		<Week />
+
+		<template v-if="!tasks.length && viewDate">
+			<div class="bg-slate-100 rounded-md p-4 md:p-6 text-center">
+				<span class="text-slate-500 text-xs">
+					<span>
+						{{ `No upcoming tasks for ${viewDate.fullDate}` }}</span
+					>
+				</span>
+			</div>
+		</template>
+
+		<template v-if="tasks.length">
+			<div :class="['gap-6 relative']">
+				<Task
+					v-for="(i, j) in tasks"
+					:key="`upcoming-task-item-${j}`"
+					:id="i.id"
+				/>
+			</div>
+		</template>
 	</div>
 </template>
 
-<script setup></script>
+<script setup>
+import { computed, ref } from "vue";
+import { useProjectsStore } from "@/stores/projectsStore";
+import { storeToRefs } from "pinia";
+
+const projectStore = useProjectsStore();
+const { tasks: tasksList, viewDate } = storeToRefs(projectStore);
+
+const tasks = computed(() => {
+	if (!viewDate.value) {
+		return [];
+	}
+	return tasksList.value.filter((i) => i.dueDate === viewDate.value.fullDate);
+});
+</script>

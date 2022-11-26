@@ -57,10 +57,18 @@ const router = createRouter({
 					name: "project",
 					component: () =>
 						import("../views/projects/ProjectView.vue"),
-					// components: {
-					// 	ProjectsView: () =>
-					// 		import("../views/projects/ProjectView.vue"),
-					// },
+					children: [
+						{
+							path: ":taskId",
+							name: "task",
+							component: () =>
+								import("../views/projects/TaskView.vue"),
+							meta: {
+								pageTitle: "Task",
+								requiresAuth: true,
+							},
+						},
+					],
 					meta: {
 						pageTitle: "Project",
 						requiresAuth: true,

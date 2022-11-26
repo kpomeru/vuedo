@@ -6,7 +6,9 @@
 				'block bg-white rounded-t-md border-b border-slate-100',
 				padding,
 			]"
-		></div>
+		>
+			<slot name="header"></slot>
+		</div>
 		<div
 			:class="[
 				'bg-white block',
@@ -14,6 +16,7 @@
 				{ 'border-x': hasBorder },
 				{ 'border-t': hasBorder && !hasHeader },
 				{ 'border-b': hasBorder && !hasFooter },
+				{ 'h-full': fullBody },
 				{ 'rounded-t-md': !hasHeader },
 				{ 'rounded-b-md': !hasFooter },
 			]"
@@ -26,14 +29,17 @@
 				'block bg-white rounded-b-md border-t border-slate-100',
 				padding,
 			]"
-		></div>
+		>
+			<slot name="footer"></slot>
+		</div>
 	</div>
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed } from "vue";
 
 const props = defineProps({
+	fullBody: { type: Boolean, default: false },
 	hasBorder: { type: Boolean, default: false },
 	hasFooter: { type: Boolean, default: false },
 	hasHeader: { type: Boolean, default: false },

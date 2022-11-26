@@ -17,7 +17,7 @@
 		<Header />
 		<div :class="['h-screen overflow-y-scroll pt-16 md:pt-0']">
 			<div
-				class="py-6 md:py-10 px-6 md:pr-8 w-full md:max-w-screen-lg mx-auto"
+				class="py-6 md:py-10 px-6 md:pr-8 w-full md:max-w-screen-md mx-auto"
 			>
 				<!-- <router-view v-slot="{ Component }">
 					<keep-alive>

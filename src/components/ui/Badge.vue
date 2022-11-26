@@ -13,7 +13,7 @@
 		@apply text-rose-500 bg-white;
 	}
 	&.dark {
-		@apply text-rose-400 bg-black;
+		@apply text-white bg-black;
 	}
 	&.slate {
 		@apply text-slate-600 bg-slate-300;

@@ -8,10 +8,11 @@
 		<template v-else>
 			<div class="flex items-center justify-between space-x-4">
 				<h3 v-if="route.name === 'projects'">Projects</h3>
-				<ProjectHeading v-else />
+				<ProjectHeading v-if="route.name === 'project'" />
+				<TaskHeading v-if="route.name === 'task'" />
 			</div>
 			<router-view></router-view>
-			<transition>
+			<transition name="slide-in-left">
 				<Comments v-if="projectStore.viewComments" />
 			</transition>
 		</template>
@@ -72,7 +73,17 @@ onMounted(() => {
 			});
 			projectStore.projects = list;
 
-			if (projectStore.projects.length && route.name !== "project") {
+			const routeSkipList = [
+				"project",
+				"task",
+				"todays-tasks",
+				"upcoming-tasks",
+			];
+
+			if (
+				projectStore.projects.length &&
+				!routeSkipList.includes(route.name)
+			) {
 				router.push({
 					name: "project",
 					params: {

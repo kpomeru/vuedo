@@ -151,6 +151,19 @@
 	transform: translateX(-150px);
 }
 
+/* Slide-in-left animation*/
+.slide-in-left-enter-to,
+.slide-in-left-leave {
+	opacity: 1;
+	transform: translateX(0);
+}
+.slide-in-left-enter,
+.slide-in-left-leave-to {
+	transition: all 0.25s;
+	opacity: 0;
+	transform: translateX(32px);
+}
+
 /* Slide-in-right animation*/
 .slide-in-right-half-sec-enter-to,
 .slide-in-right-half-sec-leave {

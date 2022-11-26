@@ -48,16 +48,12 @@ import { useDates } from "@/compositions/dates";
 import { computed, ref } from "vue";
 import { useProjects } from "@/compositions/projects";
 import { useProjectsStore } from "@/stores/ProjectsStore";
-const props = defineProps({ comment: { type: Object, required: true } });
+const props = defineProps({
+	comment: { type: Object, required: true },
+	project: { type: Object, required: true },
+});
 
 const projectsStore = useProjectsStore();
-
-const project = computed(
-	() =>
-		projectsStore.projects.find(
-			(p) => p.id === projectsStore.viewComments.id
-		) || null
-);
 
 const { formatDate } = useDates();
 const { deleteComment: dComment } = useProjects();
@@ -70,7 +66,7 @@ const date = computed(() => formatDate(props.comment.createdAt));
 const deleteComment = async () => {
 	deleting.value = true;
 	await dComment({
-		project: project.value,
+		project: props.project,
 		type: projectsStore.viewComments.type,
 		id: projectsStore.viewComments.id,
 		comment: props.comment,

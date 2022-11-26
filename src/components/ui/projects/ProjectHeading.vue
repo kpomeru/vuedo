@@ -1,9 +1,9 @@
 <template>
 	<div
 		v-if="project"
-		class="w-full flex items-start justify-between space-x-4"
+		class="w-full flex flex-col sm:flex-row items-start justify-between space-y-4 sm:space-y-0 sm:space-x-3"
 	>
-		<h5 class="flex flex-col items-start">
+		<h5 class="flex flex-col space-y-1 items-start">
 			<span>
 				<span>Project: </span>
 				<span class="text-rose-500">{{ project.title }}</span>
@@ -72,7 +72,7 @@
 				</Badge>
 			</span>
 		</h5>
-		<div class="flex items-center space-x-4">
+		<div class="flex items-center space-x-3 text-xs">
 			<span
 				class="isButton"
 				title="Tasks View"
@@ -110,7 +110,7 @@
 					/>
 				</svg>
 
-				<span class="hidden sm:inline-block capitalize">{{
+				<span class="hhidden sm:inline-block capitalize">{{
 					tasksView
 				}}</span>
 			</span>
@@ -118,12 +118,7 @@
 			<span
 				class="isButton"
 				title="Project Comments"
-				@click="
-					viewComments =
-						viewComments && viewComments.id === project.id
-							? null
-							: { id: project.id, type: 'project' }
-				"
+				@click="viewComments = true"
 			>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -138,7 +133,7 @@
 					/>
 				</svg>
 
-				<span class="hidden sm:inline-block">Comments</span>
+				<span class="hhidden sm:inline-block">Comments</span>
 			</span>
 			<template v-if="project.title.toLowerCase() !== 'general'">
 				<Dropdown align-to="right">
@@ -161,7 +156,7 @@
 										clip-rule="evenodd"
 									/>
 								</svg>
-								<span class="hidden sm:inline-block"
+								<span class="hhidden sm:inline-block"
 									>Delete</span
 								>
 							</template>
