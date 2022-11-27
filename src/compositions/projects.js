@@ -13,9 +13,12 @@ import {
 import { useToast } from "vue-toastification";
 import _ from "lodash";
 
+import { useDates } from "@/compositions/dates";
+const { formatDate } = useDates();
+
 export const useProjects = () => {
 	const authStore = useAuthStore();
-	const projectStore = useProjectsStore();
+	const projectsStore = useProjectsStore();
 	const toast = useToast();
 
 	const addProject = async ({ title }) => {
@@ -25,7 +28,7 @@ export const useProjects = () => {
 		}
 
 		if (
-			projectStore.projects
+			projectsStore.projects
 				.map((p) => p.title.toLowerCase())
 				.includes(title.toLowerCase())
 		) {
@@ -141,11 +144,11 @@ export const useProjects = () => {
 			return;
 		}
 
-		const project = projectStore.projects.find(
+		const project = projectsStore.projects.find(
 			(p) => p.id === task.projectId
 		);
 
-		const currentProject = projectStore.projects.find(
+		const currentProject = projectsStore.projects.find(
 			(p) => p.id === task.currentProjectId
 		);
 
@@ -179,7 +182,7 @@ export const useProjects = () => {
 		};
 
 		try {
-			await updateDoc(doc(db, "projects", project.id), {
+			const result = await updateDoc(doc(db, "projects", project.id), {
 				tasks: [...tasks, uTask],
 			});
 
@@ -215,6 +218,16 @@ export const useProjects = () => {
 		}
 	};
 
+	const setProject = (doc) => {
+		return {
+			id: doc.id,
+			comments: [],
+			tasks: [],
+			...doc.data(),
+			createdAt: formatDate(doc.data().createdAt),
+		};
+	};
+
 	return {
 		addComment,
 		addProject,
@@ -222,5 +235,6 @@ export const useProjects = () => {
 		deleteComment,
 		deleteProject,
 		deleteTask,
+		setProject,
 	};
 };

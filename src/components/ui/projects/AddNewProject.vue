@@ -51,10 +51,13 @@ import { useProjectsStore } from "@/stores/ProjectsStore";
 import { storeToRefs } from "pinia";
 import { reactive, ref, watch } from "vue";
 import { useToast } from "vue-toastification";
+import { useRoute } from "vue-router";
 
 const projectsStore = useProjectsStore();
 const { addProject: aProject } = useProjects();
 const { addNewProject, projects } = storeToRefs(projectsStore);
+
+const route = useRoute()
 
 const processing = ref(false);
 const projectData = reactive({
@@ -101,5 +104,9 @@ const addProject = async () => {
 	projectData.title = "";
 	processing.value = false;
 	addNewProject.value = false;
+
+	if (["upcoming-tasks", "todays-tasks"].includes(route.name)) {
+		projectsStore.getProjects();
+	}
 };
 </script>

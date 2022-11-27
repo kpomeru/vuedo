@@ -74,7 +74,7 @@
 						</template>
 						<template #content>
 							<div
-								v-for="p in projectStore.projects"
+								v-for="p in projectsStore.projects"
 								:key="p.id"
 								class="cursor-pointer px-4 py-2 hover:bg-slate-100"
 								@click="taskData.projectId = p.id"
@@ -115,13 +115,14 @@ import { useRoute } from "vue-router";
 const emit = defineEmits(["update:modelValue"]);
 
 const props = defineProps({
+	dueDate: { type: String, default: "" },
 	modelValue: { type: Boolean, required: true },
 	projectId: { type: String, default: "" },
 	task: { type: Object, required: false },
 });
 
 const { addTask: aTask } = useProjects();
-const projectStore = useProjectsStore();
+const projectsStore = useProjectsStore();
 const route = useRoute();
 
 const dueOnDate = ref(null);
@@ -138,7 +139,7 @@ const taskData = reactive({
 });
 
 const project = computed(() => {
-	return projectStore.projects.find((p) => p.id === taskData.projectId);
+	return projectsStore.projects.find((p) => p.id === taskData.projectId);
 });
 
 const selectdDate = computed(() => {
@@ -172,6 +173,10 @@ const addTask = async () => {
 
 	closeCreate();
 	processing.value = false;
+
+	if (["upcoming-tasks", "todays-tasks"].includes(route.name)) {
+		projectsStore.getProjects();
+	}
 };
 
 watch(
@@ -182,17 +187,19 @@ watch(
 );
 
 onMounted(() => {
+	taskData.dueDate = props.dueDate;
+
 	if (props.task) {
 		taskData.completed = props.task.completed;
 		taskData.content = props.task.content;
-		taskData.dueDate = props.task.dueDate;
+		taskData.dueDate = props.task.dueDate || props.dueDate;
 		taskData.id = props.task.id;
 		taskData.title = props.task.title;
 	}
 
 	taskData.currentProjectId = taskData.projectId =
 		props.projectId ||
-		projectStore.projects.find((p) => p.title.toLowerCase() === "general")
+		projectsStore.projects.find((p) => p.title.toLowerCase() === "general")
 			.id;
 });
 </script>

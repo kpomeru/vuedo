@@ -1,4 +1,9 @@
 import dayjs from "dayjs";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+
+dayjs.extend(advancedFormat);
+dayjs.extend(customParseFormat);
 
 export const useDates = () => {
 	const formatDate = (d) => {
@@ -18,5 +23,22 @@ export const useDates = () => {
 		};
 	};
 
-	return { formatDate };
+	const formatDateLite = (d) => {
+		return {
+		fullDate: d.format("YYYY-MM-DD"),
+		day: {
+			date: d.format("D"),
+			long: d.format("dddd"),
+			ordinal: d.format("Do"),
+			short: d.format("ddd"),
+		},
+		month: {
+			long: d.format("MMMM"),
+			number: d.format("M"),
+			short: d.format("MMM"),
+		},
+	};
+	}
+
+	return { formatDate, formatDateLite };
 };

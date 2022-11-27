@@ -154,18 +154,18 @@ import { useDates } from "@/compositions/dates";
 const { formatDate } = useDates();
 
 const { deleteTask: dTask } = useProjects();
-const projectStore = useProjectsStore();
-const { viewComments } = storeToRefs(projectStore);
+const projectsStore = useProjectsStore();
+const { viewComments } = storeToRefs(projectsStore);
 
 const route = useRoute();
 const router = useRouter();
 
 const task = computed(() =>
-	projectStore.tasks.find((t) => t.id === route.params.taskId)
+	projectsStore.tasks.find((t) => t.id === route.params.taskId)
 );
 
 const project = computed(() =>
-	projectStore.projects.find((p) => p.id === task.value.projectId)
+	projectsStore.projects.find((p) => p.id === task.value.projectId)
 );
 
 const date = computed(() => formatDate(task.value.createdAt));

@@ -3,7 +3,7 @@
 		class="relative group"
 		full-body
 		has-border
-		:padding="projectStore.tasksView === 'list' ? 'p-6' : 'p-4'"
+		:padding="projectsStore.tasksView === 'list' ? 'p-6' : 'p-4'"
 	>
 		<router-link
 			v-if="task.id"
@@ -36,7 +36,7 @@
 		<div
 			:class="[
 				'flex',
-				projectStore.tasksView === 'list'
+				projectsStore.tasksView === 'list'
 					? 'space-x-3 sm:space-x-4'
 					: 'space-x-2 sm:space-x-3',
 			]"
@@ -65,10 +65,10 @@
 						{{ task.content }}
 					</div>
 				</template>
-				<template v-if="dueDate || route.name === 'upcoming-tasks'">
+				<template v-if="dueDate || !route.name.includes('project')">
 					<div class="flex items-center space-x-2">
 						<template
-							v-if="route.name === 'upcoming-tasks' && project"
+							v-if="!route.name.includes('project') && project"
 						>
 							<Badge class="dark"> {{ project.title }} </Badge>
 						</template>
@@ -97,18 +97,18 @@ const props = defineProps({
 
 const route = useRoute();
 
-const projectStore = useProjectsStore();
+const projectsStore = useProjectsStore();
 const { addTask } = useProjects();
 
 const completed = ref(false);
 
 const task = computed(
-	() => projectStore.tasks.find((t) => t.id === props.id) || null
+	() => projectsStore.tasks.find((t) => t.id === props.id) || null
 );
 
 const project = computed(() =>
 	task.value
-		? projectStore.projects.find((p) => p.id === task.value.projectId)
+		? projectsStore.projects.find((p) => p.id === task.value.projectId)
 		: null
 );
 

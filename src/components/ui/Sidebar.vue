@@ -52,20 +52,39 @@
 			>
 		</div>
 		<Footer />
+		<AddNewProject />
 	</div>
 </template>
 
 <script setup>
+import { computed, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useAuthStore } from "../../stores/AuthStore";
 import UserBanner from "./user/UserBanner.vue";
+import { useUiStore } from "@/stores/UiStore";
+import { storeToRefs } from "pinia";
+
 const authStore = useAuthStore();
+const uiStore = useUiStore();
+const { sidebarOpen } = storeToRefs(uiStore);
+
 const route = useRoute();
 
 const links = [
 	{ name: "todays-tasks", title: "Today's Tasks" },
 	{ name: "upcoming-tasks", title: "Upcoming Tasks" },
 ];
+
+const deviceWidth = computed(() => window.innerWidth);
+
+watch(
+	() => route.path,
+	() => {
+		if (sidebarOpen.value && deviceWidth.value <= 576) {
+			sidebarOpen.value = false;
+		}
+	}
+);
 </script>
 
 <style lang="scss" scoped>

@@ -95,18 +95,18 @@ import { useProjectsStore } from "@/stores/projectsStore";
 import { useDates } from "@/compositions/dates";
 
 const { formatDate } = useDates();
-const projectStore = useProjectsStore();
+const projectsStore = useProjectsStore();
 const route = useRoute();
 const router = useRouter();
 
 const editState = ref(false);
 
 const task = computed(() =>
-	projectStore.tasks.find((t) => t.id === route.params.taskId)
+	projectsStore.tasks.find((t) => t.id === route.params.taskId)
 );
 
 const project = computed(
-	() => projectStore.projects.find((p) => p.id === task.projectId) || null
+	() => projectsStore.projects.find((p) => p.id === task.projectId) || null
 );
 
 const createdAt = computed(() => formatDate(task.value.createdAt));

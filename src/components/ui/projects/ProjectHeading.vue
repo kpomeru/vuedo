@@ -77,7 +77,7 @@
 				class="isButton"
 				title="Tasks View"
 				@click="
-					projectStore.toggleTasksView(
+					projectsStore.toggleTasksView(
 						tasksView === 'list' ? 'grid' : 'list'
 					)
 				"
@@ -187,11 +187,11 @@ import { storeToRefs } from "pinia";
 import { useProjects } from "@/compositions/projects";
 
 const { deleteProject: dProject } = useProjects();
-const projectStore = useProjectsStore();
-const { tasksView, viewComments } = storeToRefs(projectStore);
+const projectsStore = useProjectsStore();
+const { tasksView, viewComments } = storeToRefs(projectsStore);
 
 const project = computed(
-	() => projectStore.projects.find((p) => p.id === route.params.id) || null
+	() => projectsStore.projects.find((p) => p.id === route.params.id) || null
 );
 
 const route = useRoute();

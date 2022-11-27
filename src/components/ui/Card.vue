@@ -3,8 +3,10 @@
 		<div
 			v-if="hasHeader"
 			:class="[
-				'block bg-white rounded-t-md border-b border-slate-100',
+				'block bg-white rounded-t-md border-b',
+				borderColor,
 				padding,
+				{ border: hasBorder },
 			]"
 		>
 			<slot name="header"></slot>
@@ -13,6 +15,7 @@
 			:class="[
 				'bg-white block',
 				padding,
+				borderColor,
 				{ 'border-x': hasBorder },
 				{ 'border-t': hasBorder && !hasHeader },
 				{ 'border-b': hasBorder && !hasFooter },
@@ -26,7 +29,8 @@
 		<div
 			v-if="hasFooter"
 			:class="[
-				'block bg-white rounded-b-md border-t border-slate-100',
+				'block bg-white rounded-b-md border-t',
+				borderColor,
 				padding,
 			]"
 		>
@@ -39,6 +43,7 @@
 import { computed } from "vue";
 
 const props = defineProps({
+	borderColor: { type: String, default: "border-slate-100" },
 	fullBody: { type: Boolean, default: false },
 	hasBorder: { type: Boolean, default: false },
 	hasFooter: { type: Boolean, default: false },

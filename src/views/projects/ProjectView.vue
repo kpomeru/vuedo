@@ -7,7 +7,7 @@
 					'grid gap-6 relative',
 					{
 						'grid-cols-1 sm:grid-cols-3':
-							projectStore.tasksView === 'grid',
+							projectsStore.tasksView === 'grid',
 					},
 				]"
 			>
@@ -62,14 +62,14 @@
 import { useProjectsStore } from "@/stores/projectsStore";
 import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-const projectStore = useProjectsStore();
+const projectsStore = useProjectsStore();
 const route = useRoute();
 const router = useRouter();
 
 const addTask = ref(false);
 
 const project = computed(
-	() => projectStore.projects.find((p) => p.id === route.params.id) || null
+	() => projectsStore.projects.find((p) => p.id === route.params.id) || null
 );
 
 const tasks = computed(() => {
@@ -82,10 +82,10 @@ watch(
 	() => project.value,
 	(value) => {
 		if (!value) {
-			if (route.name === "project" && projectStore.projects.length) {
+			if (route.name === "project" && projectsStore.projects.length) {
 				router.push({
 					name: "project",
-					params: { id: projectStore.projects[0].id },
+					params: { id: projectsStore.projects[0].id },
 				});
 			}
 		} else {

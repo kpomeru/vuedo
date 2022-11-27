@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="menu__item" title="Open profile">
+		<!-- <div class="menu__item" title="Open profile">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 20 20"
@@ -15,7 +15,7 @@
 			</svg>
 
 			<span>Profile</span>
-		</div>
+		</div> -->
 		<div
 			class="menu__item"
 			@click="authStore.signOutUser"

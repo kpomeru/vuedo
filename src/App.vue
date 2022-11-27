@@ -29,6 +29,9 @@
 			</div>
 		</div>
 	</div>
+	<template v-if="authStore.user">
+		<Search />
+	</template>
 </template>
 
 <script setup>

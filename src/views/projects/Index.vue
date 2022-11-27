@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<AddNewProject />
 		<Card v-if="loading">
 			<spinner :has-padding="true"></spinner>
 		</Card>
@@ -13,7 +12,7 @@
 			</div>
 			<router-view></router-view>
 			<transition name="slide-in-left">
-				<Comments v-if="projectStore.viewComments" />
+				<Comments v-if="projectsStore.viewComments" />
 			</transition>
 		</template>
 	</div>
@@ -32,14 +31,12 @@ import { onBeforeRouteLeave, useRoute } from "vue-router";
 import { db } from "../../vuedo-firebase";
 import { useProjectsStore } from "@/stores/projectsStore";
 import { useProjects } from "@/compositions/projects";
-import { useDates } from "@/compositions/dates";
 import { useAuthStore } from "../../stores/AuthStore";
 import router from "../../router";
 
 const authStore = useAuthStore();
-const { formatDate } = useDates();
 const projects = useProjects();
-const projectStore = useProjectsStore();
+const projectsStore = useProjectsStore();
 const route = useRoute();
 
 const loading = ref(true);
@@ -63,15 +60,9 @@ onMounted(() => {
 			}
 			const list = [];
 			snapshots.forEach((doc) => {
-				list.push({
-					id: doc.id,
-					comments: [],
-					tasks: [],
-					...doc.data(),
-					createdAt: formatDate(doc.data().createdAt),
-				});
+				list.push(projects.setProject(doc));
 			});
-			projectStore.projects = list;
+			projectsStore.projects = list;
 
 			const routeSkipList = [
 				"project",
@@ -81,13 +72,13 @@ onMounted(() => {
 			];
 
 			if (
-				projectStore.projects.length &&
+				projectsStore.projects.length &&
 				!routeSkipList.includes(route.name)
 			) {
 				router.push({
 					name: "project",
 					params: {
-						id: projectStore.projects.find(
+						id: projectsStore.projects.find(
 							(p) => p.title.toLowerCase() === "general"
 						).id,
 					},

@@ -16,7 +16,7 @@
 			@click="navigateToHome"
 		/>
 		<div v-if="authStore.isLoggedIn" class="flex items-center space-x-4">
-			<IconButton size="sm">
+			<IconButton size="sm" @click="projectsStore.search = true">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					viewBox="0 0 20 20"
