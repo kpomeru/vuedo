@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
-import { useAuthStore } from "../stores/authStore";
-import { db } from "../vuedo-firebase";
-import { useProjectsStore } from "@/stores/projectsStore";
+import { useAuthStore } from "@/stores/AuthStore";
+import { db } from "@/vuedo-firebase";
+import { useProjectsStore } from "@/stores/ProjectsStore";
 import {
 	addDoc,
 	collection,

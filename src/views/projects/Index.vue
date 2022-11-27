@@ -29,7 +29,7 @@ import {
 import { onMounted, ref, watch } from "vue";
 import { onBeforeRouteLeave, useRoute } from "vue-router";
 import { db } from "@/vuedo-firebase";
-import { useProjectsStore } from "@/stores/projectsStore";
+import { useProjectsStore } from "@/stores/ProjectsStore";
 import { useProjects } from "@/compositions/projects";
 import { useAuthStore } from "@/stores/AuthStore";
 import router from "@/router";

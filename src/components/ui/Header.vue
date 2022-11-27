@@ -95,7 +95,7 @@
 import { useRouter, useRoute } from "vue-router";
 import { useAuthStore } from "../../stores/AuthStore";
 import { useUiStore } from "../../stores/UiStore";
-import { useProjectsStore } from "@/stores/projectsStore";
+import { useProjectsStore } from "@/stores/ProjectsStore";
 import { storeToRefs } from "pinia";
 
 const route = useRoute();

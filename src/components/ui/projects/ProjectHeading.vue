@@ -181,7 +181,7 @@
 
 <script setup>
 import { useRoute } from "vue-router";
-import { useProjectsStore } from "@/stores/projectsStore";
+import { useProjectsStore } from "@/stores/ProjectsStore";
 import { computed, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useProjects } from "@/compositions/projects";

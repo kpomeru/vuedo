@@ -41,7 +41,7 @@ import { useUiStore } from "@/stores/UiStore";
 import { useAuthStore } from "@/stores/AuthStore";
 import { auth } from "@/vuedo-firebase";
 import { useRoute, useRouter } from "vue-router";
-import { useProjectsStore } from "@/stores/projectsStore";
+import { useProjectsStore } from "@/stores/ProjectsStore";
 
 const authStore = useAuthStore();
 const uiStore = useUiStore();

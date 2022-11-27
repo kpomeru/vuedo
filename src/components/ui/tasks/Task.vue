@@ -88,7 +88,7 @@
 import dayjs from "dayjs";
 import { computed, onMounted, ref, watch } from "vue";
 import { useProjects } from "@/compositions/projects";
-import { useProjectsStore } from "@/stores/projectsStore";
+import { useProjectsStore } from "@/stores/ProjectsStore";
 import { useRoute } from "vue-router";
 
 const props = defineProps({

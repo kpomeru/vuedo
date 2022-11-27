@@ -43,7 +43,7 @@
 
 <script setup>
 import { onClickOutside } from "@vueuse/core";
-import { useProjectsStore } from "@/stores/projectsStore";
+import { useProjectsStore } from "@/stores/ProjectsStore";
 import { storeToRefs } from "pinia";
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";

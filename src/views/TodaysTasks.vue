@@ -64,7 +64,7 @@
 import { useDates } from "@/compositions/dates";
 import dayjs from "dayjs";
 import { computed, onMounted, ref } from "vue";
-import { useProjectsStore } from "@/stores/projectsStore";
+import { useProjectsStore } from "@/stores/ProjectsStore";
 import { storeToRefs } from "pinia";
 
 const { formatDateLite } = useDates();

@@ -49,7 +49,7 @@
 </template>
 
 <script setup>
-import { useProjectsStore } from "@/stores/projectsStore";
+import { useProjectsStore } from "@/stores/ProjectsStore";
 import { useRoute, useRouter } from "vue-router";
 const projectsStore = useProjectsStore();
 const route = useRoute();

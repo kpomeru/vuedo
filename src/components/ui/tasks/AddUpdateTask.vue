@@ -108,7 +108,7 @@
 <script setup>
 import dayjs from "dayjs";
 import { computed, onMounted, reactive, ref, watch } from "vue";
-import { useProjectsStore } from "@/stores/projectsStore";
+import { useProjectsStore } from "@/stores/ProjectsStore";
 import { useProjects } from "@/compositions/projects";
 import { useRoute } from "vue-router";
 

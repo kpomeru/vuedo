@@ -97,7 +97,7 @@ import advancedFormat from "dayjs/plugin/advancedFormat";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { computed, onMounted, ref } from "vue";
 
-import { useProjectsStore } from "@/stores/projectsStore";
+import { useProjectsStore } from "@/stores/ProjectsStore";
 import { storeToRefs } from "pinia";
 import { useDates } from "@/compositions/dates";
 const { formatDateLite: formatDate } = useDates();

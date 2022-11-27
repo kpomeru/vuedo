@@ -91,7 +91,7 @@
 import dayjs from "dayjs";
 import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { useProjectsStore } from "@/stores/projectsStore";
+import { useProjectsStore } from "@/stores/ProjectsStore";
 import { useDates } from "@/compositions/dates";
 
 const { formatDate } = useDates();
