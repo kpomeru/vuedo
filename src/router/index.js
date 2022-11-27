@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/Index.vue";
-import { auth } from "../vuedo-firebase";
-import { useAuthStore } from "../stores/authStore";
+import HomeView from "@/views/Index.vue";
+import { auth } from "@/vuedo-firebase";
+import { useAuthStore } from "@/stores/AuthStore";
 
 import { onAuthStateChanged } from "firebase/auth";
 
@@ -26,7 +26,7 @@ const router = createRouter({
 				{
 					path: "sign-in",
 					name: "sign-in",
-					component: () => import("../views/auth/SignIn.vue"),
+					component: () => import("@/views/auth/SignIn.vue"),
 					meta: {
 						pageTitle: "Sign - In",
 						isGuest: true,
@@ -35,7 +35,7 @@ const router = createRouter({
 				{
 					path: "sign-up",
 					name: "sign-up",
-					component: () => import("../views/auth/SignUp.vue"),
+					component: () => import("@/views/auth/SignUp.vue"),
 					meta: {
 						pageTitle: "Sign - Up",
 						isGuest: true,
@@ -46,7 +46,7 @@ const router = createRouter({
 		{
 			path: "/projects",
 			name: "projects",
-			component: () => import("../views/projects/Index.vue"),
+			component: () => import("@/views/projects/Index.vue"),
 			meta: {
 				pageTitle: "Projects",
 				requiresAuth: true,
@@ -55,14 +55,13 @@ const router = createRouter({
 				{
 					path: ":id",
 					name: "project",
-					component: () =>
-						import("../views/projects/ProjectView.vue"),
+					component: () => import("@/views/projects/ProjectView.vue"),
 					children: [
 						{
 							path: ":taskId",
 							name: "task",
 							component: () =>
-								import("../views/projects/TaskView.vue"),
+								import("@/views/projects/TaskView.vue"),
 							meta: {
 								pageTitle: "Task",
 								requiresAuth: true,
@@ -79,7 +78,7 @@ const router = createRouter({
 		{
 			path: "/todays-tasks",
 			name: "todays-tasks",
-			component: () => import("../views/TodaysTasks.vue"),
+			component: () => import("@/views/TodaysTasks.vue"),
 			meta: {
 				pageTitle: "Todays - Tasks",
 				requiresAuth: true,
@@ -88,7 +87,7 @@ const router = createRouter({
 		{
 			path: "/upcoming-tasks",
 			name: "upcoming-tasks",
-			component: () => import("../views/UpcomingTasks.vue"),
+			component: () => import("@/views/UpcomingTasks.vue"),
 			meta: {
 				pageTitle: "Upcoming - Tasks",
 				requiresAuth: true,
