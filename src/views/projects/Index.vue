@@ -28,11 +28,11 @@ import {
 } from "@firebase/firestore";
 import { onMounted, ref, watch } from "vue";
 import { onBeforeRouteLeave, useRoute } from "vue-router";
-import { db } from "../../vuedo-firebase";
+import { db } from "@/vuedo-firebase";
 import { useProjectsStore } from "@/stores/projectsStore";
 import { useProjects } from "@/compositions/projects";
-import { useAuthStore } from "../../stores/AuthStore";
-import router from "../../router";
+import { useAuthStore } from "@/stores/AuthStore";
+import router from "@/router";
 
 const authStore = useAuthStore();
 const projects = useProjects();

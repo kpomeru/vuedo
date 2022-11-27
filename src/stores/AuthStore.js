@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { getAuth, signOut } from "firebase/auth";
-import { useUiStore } from "./UiStore";
+import { useUiStore } from "@/stores/UiStore";
 import { useToast } from "vue-toastification";
-import { auth } from "../vuedo-firebase";
+import { auth } from "@/vuedo-firebase";
 const toast = useToast();
 
 export const useAuthStore = defineStore("auth-store", {

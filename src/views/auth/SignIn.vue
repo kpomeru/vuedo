@@ -120,7 +120,7 @@ import { useToast } from "vue-toastification";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import ContinueWithGoogle from "@/components/auth/ContinueWithGoogle.vue";
 import { useRouter } from "vue-router";
-import { auth } from "../../vuedo-firebase";
+import { auth } from "@/vuedo-firebase";
 
 const router = useRouter();
 const toast = useToast();

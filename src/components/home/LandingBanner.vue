@@ -35,5 +35,5 @@
 </template>
 
 <script setup>
-import SignInButton from "./SignInButton.vue";
+import SignInButton from "@/components/home/SignInButton.vue";
 </script>

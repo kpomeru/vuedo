@@ -1,11 +1,11 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 
-import App from "./App.vue";
-import router from "./router";
-import UiComponents from "./plugins/ui";
-import { app as firebaseApp } from "./vuedo-firebase";
-import "./assets/app.scss";
+import App from "@/App.vue";
+import router from "@/router";
+import UiComponents from "@/plugins/ui";
+import { app as firebaseApp } from "@/vuedo-firebase";
+import "@/assets/app.scss";
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 

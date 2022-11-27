@@ -6,7 +6,7 @@
 
 <script setup>
 import { useRoute } from "vue-router";
-import LandingBanner from "../components/home/LandingBanner.vue";
+import LandingBanner from "@/components/home/LandingBanner.vue";
 
 const route = useRoute();
 </script>

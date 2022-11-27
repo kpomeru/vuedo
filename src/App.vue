@@ -37,9 +37,9 @@
 <script setup>
 import { onMounted, watch } from "vue";
 import { onAuthStateChanged } from "firebase/auth";
-import { useUiStore } from "./stores/UiStore";
-import { useAuthStore } from "./stores/AuthStore";
-import { auth } from "./vuedo-firebase";
+import { useUiStore } from "@/stores/UiStore";
+import { useAuthStore } from "@/stores/AuthStore";
+import { auth } from "@/vuedo-firebase";
 import { useRoute, useRouter } from "vue-router";
 import { useProjectsStore } from "@/stores/projectsStore";
 

@@ -38,9 +38,9 @@
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useRoute, useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
-import { useUiStore } from "../../stores/UiStore";
+import { useUiStore } from "@/stores/UiStore";
 import _ from "lodash";
-import { auth } from "../../vuedo-firebase";
+import { auth } from "@/vuedo-firebase";
 
 const props = defineProps({
 	disabled: { type: Boolean, default: false },
