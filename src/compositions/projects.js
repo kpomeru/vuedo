@@ -14,12 +14,14 @@ import { useToast } from "vue-toastification";
 import _ from "lodash";
 
 import { useDates } from "@/compositions/dates";
+import { ref } from "vue";
 const { formatDate } = useDates();
 
 export const useProjects = () => {
 	const authStore = useAuthStore();
 	const projectsStore = useProjectsStore();
 	const toast = useToast();
+	const dropState = ref(null);
 
 	const addProject = async ({ title }) => {
 		if (!title) {
@@ -138,7 +140,11 @@ export const useProjects = () => {
 		}
 	};
 
-	const addTask = async (task, isCompleteUpdate = false) => {
+	const addTask = async (
+		task,
+		isCompleteUpdate = false,
+		isMovingUodate = false
+	) => {
 		if (!task.title || (task.title && task.title.length < 2)) {
 			toast("Task must have a title of 2 or more characters.");
 			return;
@@ -182,17 +188,17 @@ export const useProjects = () => {
 		};
 
 		try {
-			const result = await updateDoc(doc(db, "projects", project.id), {
+			await updateDoc(doc(db, "projects", project.id), {
 				tasks: [...tasks, uTask],
 			});
 
-			if (currentProject.id !== project.id) {
+			if (currentProject && currentProject.id !== project.id) {
 				await updateDoc(doc(db, "projects", currentProject.id), {
 					tasks: currentProject.tasks.filter((t) => t.id !== task.id),
 				});
 			}
 
-			if (!isCompleteUpdate) {
+			if (!isCompleteUpdate && !isMovingUodate) {
 				toast.success(
 					oldTask && oldTask.id ? "Task updated." : "Task added."
 				);
@@ -228,6 +234,51 @@ export const useProjects = () => {
 		};
 	};
 
+	const moveTask = async (event, { option, target }) => {
+		dropState.value = null;
+		
+		if (!["date", "project"].includes(option)) {
+			toast(`Tasks can only be moved to a day or a different project.`);
+			return;
+		}
+
+		const taskId = event.dataTransfer.getData("taskId");
+		const task = projectsStore.tasks.find((t) => t.id === taskId);
+		const project = projectsStore.projects.find((p) =>
+			(p.id === option) === "project" ? target : task.projectId
+		);
+
+		if (!project || !task) {
+			toast.error(`Task or Project not found.`);
+			return;
+		}
+
+		if (option === "project" && task.projectId !== target) {
+			await addTask(
+				{
+					...task,
+					currentProjectId: task.projectId,
+					projectId: target,
+				},
+				false,
+				true
+			);
+			toast.success(`Task moved to ${project.title} project.`);
+		}
+
+		if (option === "date" && task.dueDate !== target) {
+			await addTask(
+				{
+					...task,
+					dueDate: target,
+				},
+				false,
+				true
+			);
+			toast.success(`Task's due date updated.`);
+		}
+	};
+
 	return {
 		addComment,
 		addProject,
@@ -235,6 +286,8 @@ export const useProjects = () => {
 		deleteComment,
 		deleteProject,
 		deleteTask,
+		dropState,
+		moveTask,
 		setProject,
 	};
 };

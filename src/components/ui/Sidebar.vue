@@ -2,7 +2,7 @@
 	<div :class="['h-auto bg-white overflow-y-scroll flex flex-col']">
 		<div class="h-full p-6 flex flex-col space-y-6">
 			<UserBanner />
-			<span class="flex flex-col space-y-4">
+			<span class="flex flex-col space-y-2">
 				<router-link
 					v-for="(r, ri) in links"
 					:key="`route-${ri}`"
@@ -10,7 +10,44 @@
 					:title="`${r.title}`"
 				>
 					<span
-						:class="['isLink', { active: route.name === r.name }]"
+						:class="[
+							'isLink py-2 px-2 rounded-md',
+							{
+								active: route.name === r.name,
+								'bg-indigo-500 text-white':
+									r.name === dropState &&
+									dropState === 'todays-tasks',
+							},
+						]"
+						@drop="
+							r.name === 'todays-tasks' &&
+								moveTask($event, {
+									option: 'date',
+									target: todaysDate,
+								})
+						"
+						@dragover="
+							(e) => {
+								e.preventDefault();
+								dropState =
+									(r.name === 'todays-tasks' && r.name) ||
+									null;
+							}
+						"
+						@dragenter="
+							(e) => {
+								e.preventDefault();
+								dropState =
+									(r.name === 'todays-tasks' && r.name) ||
+									null;
+							}
+						"
+						@dragleave="
+							(e) => {
+								e.preventDefault();
+								dropState = null;
+							}
+						"
 					>
 						<svg
 							v-if="r.name === 'todays-tasks'"
@@ -63,10 +100,18 @@ import { useAuthStore } from "../../stores/AuthStore";
 import UserBanner from "./user/UserBanner.vue";
 import { useUiStore } from "@/stores/UiStore";
 import { storeToRefs } from "pinia";
+import { useProjects } from "@/compositions/projects";
+import dayjs from "dayjs";
+
+const { dropState, moveTask } = useProjects();
 
 const authStore = useAuthStore();
 const uiStore = useUiStore();
 const { sidebarOpen } = storeToRefs(uiStore);
+
+const todaysDate = computed(() => {
+	return dayjs().format("YYYY-MM-DD");
+});
 
 const route = useRoute();
 

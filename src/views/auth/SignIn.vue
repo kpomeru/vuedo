@@ -103,7 +103,7 @@
 					</router-link>
 
 					<router-link
-						to="/"
+						to="#"
 						class="underline sm:no-underline hover:underline hover:text-rose-500"
 					>
 						<span>Forgot Password</span>

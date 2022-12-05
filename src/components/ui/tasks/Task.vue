@@ -4,6 +4,10 @@
 		full-body
 		has-border
 		:padding="projectsStore.tasksView === 'list' ? 'p-6' : 'p-4'"
+		draggable="true"
+		@dragstart="startDrag($event)"
+		@drag="() => (dragging = true)"
+		@dragend="() => (dragging = false)"
 	>
 		<router-link
 			v-if="task.id"
@@ -16,7 +20,10 @@
 			}"
 		>
 			<span
-				class="rounded-full w-8 h-8 bg-rose-500 absolute -right-4 top-1/2 -mt-4 hidden group-hover:flex items-center justify-center text-white"
+				:class="[
+					'rounded-full w-8 h-8 bg-rose-500 absolute -right-4 top-1/2 -mt-4 hidden items-center justify-center text-white',
+					{ 'group-hover:flex': !dragging },
+				]"
 			>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -101,6 +108,7 @@ const projectsStore = useProjectsStore();
 const { addTask } = useProjects();
 
 const completed = ref(false);
+const dragging = ref(false);
 
 const task = computed(
 	() => projectsStore.tasks.find((t) => t.id === props.id) || null
@@ -119,6 +127,12 @@ const dueDate = computed(() => {
 
 	return dayjs(task.value.dueDate).format("MMM D, YYYY");
 });
+
+const startDrag = (e) => {
+	e.dataTransfer.dropEffect = "move";
+	e.dataTransfer.effectAllowed = "move";
+	e.dataTransfer.setData("taskId", props.id);
+};
 
 watch(
 	() => completed.value,

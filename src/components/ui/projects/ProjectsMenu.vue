@@ -32,11 +32,34 @@
 			v-for="p in projectsStore.projects"
 			:key="p.id"
 			:class="[
-				'py-2 hover:text-rose-500 cursor-pointer flex items-center justify-between',
-				{ ' text-rose-500 font-medium': route.params.id === p.id },
+				'py-2 px-2 rounded-md hover:text-rose-500 cursor-pointer flex items-center justify-between',
+				{
+					' text-rose-500 font-medium':
+						route.params.id === p.id && !dropState,
+				},
+				{ 'bg-indigo-500 text-white': dropState === p.id },
 			]"
 			:title="p.title"
 			@click="goToProject(p.id)"
+			@drop="moveTask($event, { option: 'project', target: p.id })"
+			@dragover="
+				(e) => {
+					e.preventDefault();
+					dropState = p.id;
+				}
+			"
+			@dragenter="
+				(e) => {
+					e.preventDefault();
+					dropState = p.id;
+				}
+			"
+			@dragleave="
+				(e) => {
+					e.preventDefault();
+					dropState = null;
+				}
+			"
 		>
 			<span class="capitalize">
 				{{ p.title }}
@@ -51,9 +74,13 @@
 <script setup>
 import { useProjectsStore } from "@/stores/ProjectsStore";
 import { useRoute, useRouter } from "vue-router";
+import { useProjects } from "@/compositions/projects";
+
 const projectsStore = useProjectsStore();
 const route = useRoute();
 const router = useRouter();
+const { dropState, moveTask } = useProjects();
+
 const goToProject = (id) => {
 	router.push({ name: "project", params: { id: id } });
 };

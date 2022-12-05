@@ -1,35 +1,25 @@
-# vue-project
+# Vuedo by KpOmeru
 
 This template should help get you started developing with Vue 3 in Vite.
 
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
+## Project Setup, Build and Production
 
 ```sh
-npm install
+yarn install
 ```
 
-### Compile and Hot-Reload for Development
+### Development
 
 ```sh
-npm run dev
+yarn dev (development)
 ```
 
-### Compile and Minify for Production
+### Production
 
 ```sh
-npm run build
+yarn build (production)
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+## Contribution
 
-```sh
-npm run lint
-```
+The task done isn't what a fullscale advanced Todo List might include. There are some advancements that can be added to make it more robust and complex. I leave that to you, should you choose to build further on this.
