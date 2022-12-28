@@ -51,6 +51,24 @@ onMounted(() => {
 		orderBy("createdAt")
 	);
 
+	const routeSkipList = ["project", "task", "todays-tasks", "upcoming-tasks"];
+
+	const goToFirstProject = () => {
+		if (
+			projectsStore.projects.length &&
+			!routeSkipList.includes(route.name)
+		) {
+			router.push({
+				name: "project",
+				params: {
+					id: projectsStore.projects.find(
+						(p) => p.title.toLowerCase() === "general"
+					).id,
+				},
+			});
+		}
+	};
+
 	removeProjectsListener.value = onSnapshot(
 		q,
 		async (snapshots) => {
@@ -63,27 +81,7 @@ onMounted(() => {
 				list.push(projects.setProject(doc));
 			});
 			projectsStore.projects = list;
-
-			const routeSkipList = [
-				"project",
-				"task",
-				"todays-tasks",
-				"upcoming-tasks",
-			];
-
-			if (
-				projectsStore.projects.length &&
-				!routeSkipList.includes(route.name)
-			) {
-				router.push({
-					name: "project",
-					params: {
-						id: projectsStore.projects.find(
-							(p) => p.title.toLowerCase() === "general"
-						).id,
-					},
-				});
-			}
+			goToFirstProject();
 		},
 		(error) => {
 			console.log(error);

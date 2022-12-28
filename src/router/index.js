@@ -1,9 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "@/views/Index.vue";
-import { auth } from "@/vuedo-firebase";
 import { useAuthStore } from "@/stores/AuthStore";
-
-import { onAuthStateChanged } from "firebase/auth";
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -93,21 +90,17 @@ const router = createRouter({
 				requiresAuth: true,
 			},
 		},
+		{
+			path: "/:pathMatch(.*)",
+			name: "not-found",
+			component: HomeView,
+			// component: () => import("@/views/NotFound.vue"),
+			meta: {
+				pageTitle: "Not Found",
+			},
+		},
 	],
 });
-
-// const getCurrentUser = () => {
-// 	return new Promise((resolve, reject) => {
-// 		const removeListener = onAuthStateChanged(
-// 			auth,
-// 			(user) => {
-// 				removeListener();
-// 				resolve(user);
-// 			},
-// 			reject
-// 		);
-// 	});
-// };
 
 router.beforeEach(async (to, from, next) => {
 	const authStore = useAuthStore();
