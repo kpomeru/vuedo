@@ -10,14 +10,14 @@
 	/>
 	<div
 		:class="[
-			'flex flex-col md:fixed md:inset-y-0 md:right-0',
+			'flex flex-col justify-between md:fixed md:inset-y-0 md:right-0',
 			uiStore.sidebarOpen && authStore.isLoggedIn ? 'left-80' : 'left-0',
 		]"
 	>
 		<Header />
-		<div :class="['h-screen overflow-y-scroll pt-16 md:pt-0']">
+		<div :class="['h-full shrink overflow-y-scroll pt-16 md:pt-0']">
 			<div
-				class="py-6 md:py-10 px-6 md:pr-8 w-full md:max-w-screen-md mx-auto"
+				:class="['py-6 md:py-10 px-6 md:pr-8 w-full md:max-w-screen-md mx-auto h-full', {'flex items-center': route.name === 'home'}]"
 			>
 				<!-- <router-view v-slot="{ Component }">
 					<keep-alive>
@@ -28,6 +28,7 @@
 				<router-view></router-view>
 			</div>
 		</div>
+		<Footer :class="[{ hidden: sidebarOpen }]" />
 	</div>
 	<template v-if="authStore.user">
 		<Search />
@@ -42,12 +43,15 @@ import { useAuthStore } from "@/stores/AuthStore";
 import { auth } from "@/vuedo-firebase";
 import { useRoute, useRouter } from "vue-router";
 import { useProjectsStore } from "@/stores/ProjectsStore";
+import { storeToRefs } from "pinia";
 
 const authStore = useAuthStore();
 const uiStore = useUiStore();
 const route = useRoute();
 const router = useRouter();
 const projectsStore = useProjectsStore();
+
+const { sidebarOpen } = storeToRefs(uiStore);
 
 const redirectChecks = () => {
 	if (authStore.user && route.meta.isGuest) {

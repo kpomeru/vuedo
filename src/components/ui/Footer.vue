@@ -1,9 +1,17 @@
 <template>
-	<div class="bg-white w-full">
+	<div :class="['bg-white w-full']">
 		<div
-			class="flex items-end justify-between px-6 py-4 md:py-6 max-w-screen-lg w-full mx-auto"
+			:class="[
+				'flex justify-between px-6 py-4 md:py-6 max-w-screen-lg w-full mx-auto',
+				{ 'items-end': sidebarOpen },
+			]"
 		>
-			<div class="flex flex-col">
+			<div
+				:class="[
+					'flex flex-col',
+					{ 'sm:flex-row sm:space-x-2 items-center': !sidebarOpen },
+				]"
+			>
 				<div>
 					<span> &copy; {{ `${year}` }} </span>
 					<span class="font-semibold text-rose-500"> Vuedo.</span>
@@ -56,6 +64,11 @@
 
 <script setup>
 import { computed } from "vue";
+import { useUiStore } from "@/stores/UiStore";
+import { storeToRefs } from "pinia";
+
+const uiStore = useUiStore();
+const { sidebarOpen } = storeToRefs(uiStore);
 
 const year = computed(() => {
 	const date = new Date();
