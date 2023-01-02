@@ -1,5 +1,5 @@
 <template>
-	<Loader v-if="uiStore.pageLoading" />
+	<Loader v-if="pageLoading" />
 	<Sidebar
 		:class="[
 			'fixed inset-y-0 z-50 w-80',
@@ -51,7 +51,7 @@ const route = useRoute();
 const router = useRouter();
 const projectsStore = useProjectsStore();
 
-const { sidebarOpen } = storeToRefs(uiStore);
+const { pageLoading, sidebarOpen } = storeToRefs(uiStore);
 
 const redirectChecks = () => {
 	if (authStore.user && route.meta.isGuest) {
@@ -84,6 +84,6 @@ onMounted(() => {
 		authStore.user = user ? user : null;
 		projectsStore.projects = [];
 	});
-	uiStore.pageLoading = false;
+	pageLoading.value = false;
 });
 </script>

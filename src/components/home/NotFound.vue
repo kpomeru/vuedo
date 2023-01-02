@@ -3,7 +3,7 @@
 		<div>
 			<img src="/images/404.svg" alt="Landing image" class="w-full" />
 		</div>
-		<div class="space-x-3">
+		<div class="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
 			<router-link
 				class="nf-link"
 				title="Go to today's tasks page"
@@ -33,7 +33,7 @@
 
 <style lang="scss" scoped>
 .nf-link {
-	@apply bg-rose-200 text-rose-700 hover:bg-rose-500 hover:text-white px-4 py-2 rounded;
+	@apply bg-indigo-200 text-indigo-700 hover:bg-indigo-500 hover:text-white px-4 py-2 rounded inline-block text-center;
 }
 </style>
 

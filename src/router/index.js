@@ -93,11 +93,12 @@ const router = createRouter({
 		{
 			path: "/:pathMatch(.*)",
 			name: "not-found",
-			component: HomeView,
-			// component: () => import("@/views/NotFound.vue"),
-			meta: {
-				pageTitle: "Not Found",
-			},
+			redirect: { name: "projects" },
+			// component: HomeView,
+			// // component: () => import("@/views/NotFound.vue"),
+			// meta: {
+			// 	pageTitle: "Not Found",
+			// },
 		},
 	],
 });
