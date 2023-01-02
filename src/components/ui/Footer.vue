@@ -8,8 +8,10 @@
 		>
 			<div
 				:class="[
-					'flex flex-col',
-					{ 'sm:flex-row sm:space-x-2 items-center': !sidebarOpen },
+					'flex',
+					sidebarOpen
+						? 'flex-col items-start'
+						: 'items-center space-x-1',
 				]"
 			>
 				<div>

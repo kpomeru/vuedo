@@ -10,7 +10,7 @@
 	/>
 	<div
 		:class="[
-			'flex flex-col justify-between md:fixed md:inset-y-0 md:right-0',
+			'flex flex-col justify-between md:fixed md:inset-y-0 md:right-0 min-h-screen',
 			uiStore.sidebarOpen && authStore.isLoggedIn ? 'left-80' : 'left-0',
 		]"
 	>
